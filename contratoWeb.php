@@ -3,9 +3,9 @@ include_once 'contrato.php';
 class ContratoWeb extends Contrato{
     private $porcentajeDescuento;
 
-	public function __construct($fechaInicio, $fechaVencimiento, $plan, $estadoContrato, $costoContrato, $renovacion, $cliente, $porcentajeDescuento) {
-        parent::__construct($fechaInicio, $fechaVencimiento, $plan, $estadoContrato, $costoContrato, $renovacion, $cliente);
-		$this->porcentajeDescuento = $porcentajeDescuento;
+	public function __construct($fechaInicio, $fechaVencimiento, $plan, $estadoContrato, $costoContrato, $renovacion, $cliente, $id,$porcentajeDescuento) {
+        parent::__construct($fechaInicio, $fechaVencimiento, $plan, $estadoContrato, $costoContrato, $renovacion, $cliente, $id);
+		$this->porcentajeDescuento = 10;
 	}
 
 	public function getPorcentajeDescuento() {

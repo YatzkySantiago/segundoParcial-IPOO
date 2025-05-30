@@ -7,6 +7,7 @@ class Contrato{
     private $costoContrato;
     private $renovacion;
     private $cliente;
+	private $id;
 
 	public function __construct($fechaInicio, $fechaVencimiento, $plan, $estadoContrato, $costoContrato, $renovacion, $cliente) {
 		$this->fechaInicio = $fechaInicio;

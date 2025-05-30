@@ -60,18 +60,47 @@ class EmpresaCable{
         return $contract;
     }
 
-    public function incorporarContrato($plan, $cliente, $fechaInicio, $fechaFin, $web){
+    public function incorporarContrato($plan, $cliente, $fechaInicio, $fechaFin, $id, $web){
         $contratoExistente = $this->buscarContrato($cliente->getTipoDocumento(), $cliente->getNumeroDocumento());
         if ($contratoExistente != null && $contratoExistente->getEstadoContrato() == "al dia") {
             $contratoExistente->setEstadoContrato("finalizado");
         }
         if ($web) {
-            $contratoNuevo = new ContratoWeb($fechaInicio, $fechaFin, $plan, "al dia", 0, true, $cliente, 10);
+            $contratoNuevo = new ContratoWeb($fechaInicio, $fechaFin, $plan, "al dia", 0, true, $cliente, $id);
         } else {
-            $contratoNuevo = new Contrato($fechaInicio, $fechaFin, $plan, "al dia", 0, true, $cliente);
+            $contratoNuevo = new Contrato($fechaInicio, $fechaFin, $plan, "al dia", 0, true, $cliente, $id);
         }
         $costo = $contratoNuevo->calcularImporte();
         $contratoNuevo->setCosto($costo);
         $this->setContratos($contratoNuevo);
+    }
+
+    public function retornarPromImporteContratos($codigo){
+        $suma = 0;
+        $cuenta = 0;
+        foreach ($this->getContratos() as $contrato) {
+            $plan = $contrato->getPlan();
+            if ($plan->getCodigo() == $codigo) {
+                $suma = $suma + $contrato->getCostoContrato();
+                $cuenta ++;
+            }
+        }
+        if ($suma == 0 && $cuenta == 0) {
+            $promedio = 0;
+        } else {
+            $promedio = $suma / $cuenta;
+        }
+        return $promedio;
+    }
+
+    public function pagarContrato($codigo){
+        $valor = 0;
+        foreach ($this->getContratos() as $contrato) {
+            if ($contrato->getId() == $codigo) {
+                $contrato->actualizarEstadoContrato("al dia");
+                $valor = $contrato->calcularImporte();
+            }
+        }
+        return $valor;
     }
 }
