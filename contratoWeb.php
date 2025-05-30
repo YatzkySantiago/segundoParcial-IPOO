@@ -18,4 +18,10 @@ class ContratoWeb extends Contrato{
 	public function __toString(){
 		return "fecha inicio: " . $this->getFechaInicio() . "\nfecha Vencimiento: " . $this->getFechaVencimiento() . "\nplan: " . $this->getPlan() . "\nEstado del contrato: " . $this->getEstadoContrato() . "\nCosto: " . $this->getCostoContrato() . "\nrenovacion: " . $this->getRenovacion() . "\nCliente: " . $this->getCliente() . "\nporcentaje descuento: " . $this->getPorcentajeDescuento();
 	}
+
+	public function calcularImporte(){
+		$importebase = parent::calcularImporte();
+		$importeFinal = $importeBase - ($importebase * 0.10);
+		return $importeFinal;
+	}
 }
