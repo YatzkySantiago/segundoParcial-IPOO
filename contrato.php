@@ -66,4 +66,32 @@ class Contrato{
 	public function setCliente($value) {
 		$this->cliente = $value;
 	}
+
+	public function actualizarEstadoContrato(){
+		$dias = $this->diasContratoVencido($this);
+		if ($dias == 0) {
+			$this->setEstadoContrato("al dia");
+		} elseif ($dias > 0 && $dias < 10) {
+			$this->setEstadoContrato("moroso");
+		} elseif ($dias >= 10){
+			$this->setEstadoContrato("suspendido");
+		}
+	}
+
+	public function calcularImporte(){
+		$planElegido = $this->getPlan();
+		$importeFinal = $this->getCostoContrato() + $planElegido->getImporte();
+		if ($this->getEstadoContrato() == "al dia") {
+			$this->setRenovacion(true);
+		} elseif ($this->getEstadoContrato() == "moroso") {
+			$importeFinal = $importeFinal + (($importeFinal * 0.10) * $this->diasContratoVencido($this));
+			$this->setRenovacion(true);
+		} elseif ($this->getEstadoContrato() == "suspendido") {
+			$importeFinal = $importeFinal + (($importeFinal * 0.10) * $this->diasContratoVencido($this));
+			$this->setRenovacion(false);
+		} elseif ($this->getEstadoContrato() == "finalizado") {
+			$this->setRenovacion(false);
+		}
+		return $importeFinal;
+	}
 }
