@@ -1,5 +1,8 @@
 <?php
+include_once 'canales.php';
+include_once 'contrato.php';
 include_once 'contratoWeb.php';
+include_once 'planes.php';
 class EmpresaCable{
     private $planes;
     private $canales;

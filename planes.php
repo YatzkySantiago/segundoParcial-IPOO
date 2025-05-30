@@ -1,5 +1,9 @@
 <?php
-class Planes{
+include_once 'canales.php';
+include_once 'contrato.php';
+include_once 'contratoWeb.php';
+include_once 'empresaCable.php';
+class Plan{
     private $codigo;
     private $canales;
     private $importe;
