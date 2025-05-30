@@ -1,4 +1,5 @@
 <?php
+include_once 'contratoWeb.php';
 class EmpresaCable{
     private $planes;
     private $canales;
@@ -60,6 +61,17 @@ class EmpresaCable{
     }
 
     public function incorporarContrato($plan, $cliente, $fechaInicio, $fechaFin, $web){
-        
+        $contratoExistente = $this->buscarContrato($cliente->getTipoDocumento(), $cliente->getNumeroDocumento());
+        if ($contratoExistente != null && $contratoExistente->getEstadoContrato() == "al dia") {
+            $contratoExistente->setEstadoContrato("finalizado");
+        }
+        if ($web) {
+            $contratoNuevo = new ContratoWeb($fechaInicio, $fechaFin, $plan, "al dia", 0, true, $cliente, 10);
+        } else {
+            $contratoNuevo = new Contrato($fechaInicio, $fechaFin, $plan, "al dia", 0, true, $cliente);
+        }
+        $costo = $contratoNuevo->calcularImporte();
+        $contratoNuevo->setCosto($costo);
+        $this->setContratos($contratoNuevo);
     }
 }
